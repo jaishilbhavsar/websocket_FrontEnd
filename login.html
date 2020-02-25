@@ -86,7 +86,8 @@
     </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-    </script>
+	</script>
+	<script type="text/javascript" src="./shared/AuthenticationService.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Shopin Responsive web template, Bootstrap Web Templates, Flat Web Templates, AndroId Compatible web template, 
@@ -97,44 +98,12 @@
         function Login(event) {
             // event.preventDefault();
             var email = document.getElementById("email_id").value;
-            var password = document.getElementById("password").value;
-            // console.log(email + " " + password);
-            // console.log("inside");
-            // var email = document.getElementById("email_id").value;
-            // var password = document.getElementById("password").value;
-            // $.ajax({
-            //     type: "POST",
-            //     url: "?emailid=" + email + "&password=" + password,
-            //     dataType: "json",
-            //     success: function (result, status, xhr) {
-            //         var p =$("<p>");
-            //         p.append(result);
-            //         p.append("</p>");
-            //         $("#message").html(p);
-            //     },
-            //     error: function (xhr, status, error) {
-            //         alert("Result: " + status + " " + error + " " + xhr.status +
-            //             " " + xhr.statusText)
-            //     }
-            // });
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("message").innerHTML =
-                        this.responseText;
-                        if(this.responseText==true)
-                        {
-                            window.location.pathname="C:/Projects/FIX/client.html";
-                        }
-                        else
-                        {
-                            alert("Invalid");
-                        }
-                }
-            };
-            xhttp.open("POST", "xmlhttp_info.txt", true,email,password);
-            xhttp.send();
-
+			var password = document.getElementById("password").value;
+			sha512(password).then(data=>{
+				if(!ValidateUser(email,data,false,'',false)){
+					alert("Enter Valid Creditintials!!!");
+				}
+			});
         }
     </script>
 </head>
