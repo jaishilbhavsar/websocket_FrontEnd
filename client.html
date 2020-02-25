@@ -25,9 +25,24 @@
 
         function connectServer() {
             console.log("connecting");
-            socket = new WebSocket("ws://localhost:1337");
+            var url="ws://localhost:1337";
+            // var params="?auth=zda";
+            socket = new WebSocket(url);
+            socket.onopen= ()=>{
+                let token=localStorage.getItem('Token');
+                socket.send(token);
+                console.log("sent message : ",token);
+            };
+            socket.onclose = ()=>{
+                console.log(" Websocket Connection Closed ");
+            }
             socket.onmessage = function (event) {
                 console.log(event.data);
+                let stringMessage=String(event.data);
+                let splittedString=stringMessage.split(" ");
+                socket.send(`Verification ${splittedString[3]} Basic ${localStorage.getItem('Token')}`);
+                // socket.send(`Verification ${localStorage.getItem('Token')}`);
+                console.log("message sent "+ `Verification ${splittedString[3]}`);
                 var data = "";
                 var str = event.data;
                 var res = str.split("</Trader>");
