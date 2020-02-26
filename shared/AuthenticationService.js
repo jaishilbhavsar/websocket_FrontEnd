@@ -12,7 +12,7 @@ function include(file) {
 //   include('../websocket_FrontEnd/shared/TBACommon.js');
 include('./shared/config.js');
 include('./shared/TBACommon.js');
-  function ValidateUser(userName,password,isOldSessionExist,captachCode,isCaptchaV2){
+  async function ValidateUser(userName,password,isOldSessionExist,captachCode,isCaptchaV2){
     var loginParameters = {
         ClientType: config.clientType,
         ClientVersion: detectBrowser().toString(),
@@ -43,5 +43,7 @@ include('./shared/TBACommon.js');
         else{
             return false;
         }
+    }).then(()=>{
+        location.href="http://localhost:8080/client.html";
     });
   }

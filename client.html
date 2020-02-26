@@ -73,7 +73,11 @@
         }
         function onLoading()
         {
-            var token=window.localStorage.getItem('Token');
+                var token=window.localStorage.getItem('Token');
+                if(token===undefined || token===null)
+                {
+                    window.location="http://localhost:8080/login.html";
+                }
         }
     </script>
 </head>
