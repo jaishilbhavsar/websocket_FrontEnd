@@ -8,10 +8,11 @@ function include(file) {
     document.getElementsByTagName('head').item(0).appendChild(script); 
     
   }
-  include('../websocket_FrontEnd/shared/config.js');
-  include('../websocket_FrontEnd/shared/TBACommon.js');
-  
-  function ValidateUser(userName,password,isOldSessionExist,captachCode,isCaptchaV2){
+//   include('../websocket_FrontEnd/shared/config.js');
+//   include('../websocket_FrontEnd/shared/TBACommon.js');
+include('./shared/config.js');
+include('./shared/TBACommon.js');
+  async function ValidateUser(userName,password,isOldSessionExist,captachCode,isCaptchaV2){
     var loginParameters = {
         ClientType: config.clientType,
         ClientVersion: detectBrowser().toString(),
@@ -42,5 +43,7 @@ function include(file) {
         else{
             return false;
         }
+    }).then(()=>{
+        location.href="http://localhost:8080/client.html";
     });
   }

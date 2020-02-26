@@ -72,7 +72,30 @@
 		}
 		.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
 			background-color: #c0392b !important;
+
 		}
+		.bd-example-modal-lg .modal-dialog{
+    display: table;
+    position: relative;
+    margin: 0 auto;
+    top: calc(50% - 24px);
+  }
+
+  .bd-example-modal-lg .modal-dialog .modal-content{
+    background-color: transparent;
+    border: none;
+  }
+  .bd-example-modal-lg .modal-dialog{
+    display: table;
+    position: relative;
+    margin: 0 auto;
+    top: calc(50% - 24px);
+  }
+  
+  .bd-example-modal-lg .modal-dialog .modal-content{
+    background-color: transparent;
+    border: none;
+  }
     </style>
     	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
     
@@ -87,24 +110,30 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
 	</script>
+	
 	<script type="text/javascript" src="./shared/AuthenticationService.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="keywords" content="Shopin Responsive web template, Bootstrap Web Templates, Flat Web Templates, AndroId Compatible web template, 
     Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
     <!--theme-style-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
     <script>
-        function Login(event) {
-            // event.preventDefault();
+        async function Login(event) {
+			// event.preventDefault();
+			
             var email = document.getElementById("email_id").value;
 			var password = document.getElementById("password").value;
 			sha512(password).then(data=>{
-				if(ValidateUser(email,data,false,'',false)===false){
+				let result=ValidateUser(email,data,false,'',false);
+				if(result===false){
 					alert("Enter Valid Creditintials!!!");
 				}
 				else{
-					window.location.href="file:///C:/Users/mshah/Desktop/websocket_FrontEnd/client.html";
+					// setTimeout(()=>{
+						// location.href="http://localhost:8080/client.html";
+					// },3000);
 				}
 			});
         }
@@ -112,7 +141,7 @@
 </head>
 
 <body>  
-    <div class="container h-100">
+    <div class="container h-100 ">
 		<div class="d-flex justify-content-center h-100">
 			<div class="user_card">
 				<div class="d-flex justify-content-center">
