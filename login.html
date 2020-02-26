@@ -121,19 +121,12 @@
 
     <script>
         async function Login(event) {
-			// event.preventDefault();
-			
             var email = document.getElementById("email_id").value;
 			var password = document.getElementById("password").value;
 			sha512(password).then(data=>{
 				let result=ValidateUser(email,data,false,'',false);
 				if(result===false){
 					alert("Enter Valid Creditintials!!!");
-				}
-				else{
-					// setTimeout(()=>{
-						// location.href="http://localhost:8080/client.html";
-					// },3000);
 				}
 			});
         }

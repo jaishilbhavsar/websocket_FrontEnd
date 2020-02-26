@@ -28,11 +28,9 @@
     Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
     <script>
         var socket;
-
         function connectServer() {
             console.log("connecting");
             var url="ws://localhost:1337";
-            // var params="?auth=zda";
             url+="/"+localStorage.getItem('Token');
             socket = new WebSocket(url);
             socket.onopen= ()=>{
@@ -49,8 +47,6 @@
                     socket.send(`Verification ${splittedString[1]}`);
                     console.log(`Verification ${splittedString[1]}`);
                 }
-                // socket.send(`Verification ${splittedString[3]} Basic ${localStorage.getItem('Token')}`);
-                // socket.send(`Verification ${localStorage.getItem('Token')}`);
                 var data = "";
                 var str = event.data;
                 var brokerFrame = window.frames['broker'];
