@@ -27,11 +27,10 @@
             console.log("connecting");
             var url="ws://localhost:1337";
             // var params="?auth=zda";
+            url+="/"+localStorage.getItem('Token');
             socket = new WebSocket(url);
             socket.onopen= ()=>{
-                let token=localStorage.getItem('Token');
-                socket.send(token);
-                console.log("sent message : ",token);
+                console.log("WebSocket Connection Established");
             };
             socket.onclose = ()=>{
                 console.log(" Websocket Connection Closed ");
@@ -40,9 +39,12 @@
                 console.log(event.data);
                 let stringMessage=String(event.data);
                 let splittedString=stringMessage.split(" ");
-                socket.send(`Verification ${splittedString[3]} Basic ${localStorage.getItem('Token')}`);
+                if(splittedString[0]==="ID"){
+                    socket.send(`Verification ${splittedString[1]}`);
+                    console.log(`Verification ${splittedString[1]}`);
+                }
+                // socket.send(`Verification ${splittedString[3]} Basic ${localStorage.getItem('Token')}`);
                 // socket.send(`Verification ${localStorage.getItem('Token')}`);
-                console.log("message sent "+ `Verification ${splittedString[3]}`);
                 var data = "";
                 var str = event.data;
                 var res = str.split("</Trader>");
