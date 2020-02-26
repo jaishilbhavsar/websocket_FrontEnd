@@ -31,11 +31,6 @@
 
         function connectServer() {
             console.log("connecting");
-<<<<<<< HEAD
-            //socket = new WebSocket("ws://192.168.32.89:1337");
-            socket = new WebSocket("ws://localhost:1337");
-            socket.onmessage = function (event) {
-=======
             var url="ws://localhost:1337";
             // var params="?auth=zda";
             socket = new WebSocket(url);
@@ -54,7 +49,6 @@
                 socket.send(`Verification ${splittedString[3]} Basic ${localStorage.getItem('Token')}`);
                 // socket.send(`Verification ${localStorage.getItem('Token')}`);
                 console.log("message sent "+ `Verification ${splittedString[3]}`);
->>>>>>> 6d789fa6141eaf730f9250eb415b18d3f22cc6ba
                 var data = "";
                 var str = event.data;
                 var brokerFrame = window.frames['broker'];
@@ -77,9 +71,13 @@
             socket.send("Hey Sending you msg ---");
             console.log("sent");
         }
+        function onLoading()
+        {
+            var token=window.localStorage.getItem('Token');
+        }
     </script>
 </head>
-<body style="margin:0px;padding:0px;overflow:hidden">
+<body style="margin:0px;padding:0px;overflow:hidden" onload="onLoading()">
     <div>
     <div><button onclick="connectServer()" >Connect</button></div>
     <div>

@@ -31,10 +31,12 @@
             var res = str.split("</Trader>");
             var temp = res[0].split(">");
             if (temp[1] == "BROKER") {
+                var isWorkup = false;
                 res = res[1];
                 var product = res.split("</Product>");
                 temp = product[0].split(">");
-                data = temp[1];
+                var data = temp[1];
+                console.log(data);
                 res = product[1];
                 var message = res.split("</Message>");
                 temp = message[0];
@@ -43,30 +45,59 @@
                 var tags = msg.split("*");
                 tags.forEach(tag => {
                     var arr = tag.split("|");
-                    var myHtmlContent = "";
+                    var myHtmlContent = "<td>" + data + "</td>";
                     var pitId = arr[0];
+                    var cnt = 0;
                     for (let i = 0; i < arr.length; i++) {
+                        cnt = arr.length;
                         if (arr[i] == null || arr[i] == " ") {
                             myHtmlContent += "<td> </td>";
-                        } else if (arr[i] == 'B' || arr[i] == 'S' || arr[i]=='W') {
+                        } else if (arr[i] == 'B' || arr[i] == 'S') {
                             if (i < 7) {
-                                myHtmlContent += "<td>" + arr[i] + "</td>";
+                                if (isWorkup == true) {
+                                    myHtmlContent += "<td>" + arr[i] + "</td>";
+                                    myHtmlContent += "<td>" + " " + "</td>";
+                                    var tableRef = document.getElementById('brokerTable')
+                                        .getElementsByTagName('tbody')[0];
+                                    var newRow = tableRef.insertRow(tableRef.rows.length);
+                                    newRow.innerHTML = myHtmlContent;
+                                    myHtmlContent = "";
+                                    isWorkup = false;
+                                } else {
+                                    myHtmlContent += "<td>" + arr[i] + "</td>";
+                                }
+
                             } else {
                                 var tableRef = document.getElementById('brokerTable')
                                     .getElementsByTagName('tbody')[0];
                                 var newRow = tableRef.insertRow(tableRef.rows.length);
                                 newRow.innerHTML = myHtmlContent;
-                                myHtmlContent = "<td>" + pitId + "</td>";
+                                myHtmlContent = "<td>" + data + "</td>";
+                                myHtmlContent += "<td>" + pitId + "</td>";
                                 myHtmlContent += "<td>" + arr[i] + "</td>";
                             }
+                        } else if (arr[i] == 'W') {
+                            myHtmlContent += "<td>" + arr[i] + "</td>";
+                            isWorkup = true;
+                        } else if (arr[i] == "N") {
+                            myHtmlContent += "<td>" + arr[i] + "</td>";
+                            isWorkup = false;
+                            var tableRef = document.getElementById('brokerTable').getElementsByTagName('tbody')[
+                                0];
+                            var newRow = tableRef.insertRow(tableRef.rows.length);
+                            newRow.innerHTML = myHtmlContent;
+                            myHtmlContent = "<td>" + data + "</td>";
                         } else if (arr[i] != "E" && arr[i] != "Z") {
                             myHtmlContent += "<td>" + arr[i] + "</td>";
                         }
                     }
-                    var tableRef = document.getElementById('brokerTable').getElementsByTagName('tbody')[
-                        0];
-                    var newRow = tableRef.insertRow(tableRef.rows.length);
-                    newRow.innerHTML = myHtmlContent;
+                    if (cnt > 3) {
+                        var tableRef = document.getElementById('brokerTable').getElementsByTagName('tbody')[
+                            0];
+                        var newRow = tableRef.insertRow(tableRef.rows.length);
+                        newRow.innerHTML = myHtmlContent;
+                        myHtmlContent = "";
+                    }
                 });
             }
         }
@@ -88,6 +119,7 @@
             <table class="table table-striped table-dark" id="brokerTable">
                 <thead>
                     <tr>
+                        <th scope="col">Product Id</th>
                         <th scope="col">Pit Id</th>
                         <th scope="col">Buy/Sell</th>
                         <th scope="col">Price</th>

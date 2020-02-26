@@ -23,56 +23,81 @@
     <script>
         var socket;
 
-        function connectServer() {
-            console.log("connecting");
-            socket = new WebSocket("ws://192.168.32.89:1337");
-            //socket = new WebSocket("ws://localhost:1337");
-            function myFunc(str) {
-                console.log(str);
-                var res = str.split("</Trader>");
-                var temp = res[0].split(">");
-                res = res[1];
-                var product = res.split("</Product>");
-                temp = product[0].split(">");
-                data = temp[1];
-                res = product[1];
-                var message = res.split("</Message>");
-                temp = message[0];
-                var msg = temp.split("<Message>");
-                msg = msg[1];
-                var tags = msg.split("*");
-                tags.forEach(tag => {
-                    var arr = tag.split("|");
-                    var myHtmlContent = "";
-                    var pitId = arr[0];
-                    for (let i = 0; i < arr.length; i++) {
-                        if (arr[i] == null || arr[i] == " ") {
-                            myHtmlContent += "<td> </td>";
-                        } else if (arr[i] == 'B' || arr[i] == 'S' || arr[i] == 'W') {
-                            if (i < 7) {
+        socket = new WebSocket("ws://192.168.32.89:1337");
+        //socket = new WebSocket("ws://localhost:1337");
+        function myFunc(str) {
+            console.log(str);
+            var res = str.split("</Trader>");
+            var temp = res[0].split(">");
+            var isWorkup = false;
+            res = res[1];
+            var product = res.split("</Product>");
+            temp = product[0].split(">");
+            var data = temp[1];
+            console.log(data);
+            res = product[1];
+            var message = res.split("</Message>");
+            temp = message[0];
+            var msg = temp.split("<Message>");
+            msg = msg[1];
+            var tags = msg.split("*");
+            tags.forEach(tag => {
+                var arr = tag.split("|");
+                var myHtmlContent = "<td>" + data + "</td>";
+                var pitId = arr[0];
+                var cnt = 0;
+                for (let i = 0; i < arr.length; i++) {
+                    cnt = arr.length;
+                    if (arr[i] == null || arr[i] == " ") {
+                        myHtmlContent += "<td> </td>";
+                    } else if (arr[i] == 'B' || arr[i] == 'S') {
+                        if (i < 7) {
+                            if (isWorkup == true) {
                                 myHtmlContent += "<td>" + arr[i] + "</td>";
-                            } else {
+                                myHtmlContent += "<td>" + " " + "</td>";
                                 var tableRef = document.getElementById('traderTable')
                                     .getElementsByTagName('tbody')[0];
                                 var newRow = tableRef.insertRow(tableRef.rows.length);
                                 newRow.innerHTML = myHtmlContent;
-                                myHtmlContent = "<td>" + pitId + "</td>";
+                                myHtmlContent = "";
+                                isWorkup = false;
+                            } else {
                                 myHtmlContent += "<td>" + arr[i] + "</td>";
                             }
-                        } else if (arr[i] != "E" && arr[i] != "Z") {
+
+                        } else {
+                            var tableRef = document.getElementById('traderTable')
+                                .getElementsByTagName('tbody')[0];
+                            var newRow = tableRef.insertRow(tableRef.rows.length);
+                            newRow.innerHTML = myHtmlContent;
+                            myHtmlContent = "<td>" + data + "</td>";
+                            myHtmlContent += "<td>" + pitId + "</td>";
                             myHtmlContent += "<td>" + arr[i] + "</td>";
                         }
+                    } else if (arr[i] == 'W') {
+                        myHtmlContent += "<td>" + arr[i] + "</td>";
+                        isWorkup = true;
+                    } else if (arr[i] == "N") {
+                        myHtmlContent += "<td>" + arr[i] + "</td>";
+                        isWorkup = false;
+                        var tableRef = document.getElementById('traderTable').getElementsByTagName('tbody')[
+                            0];
+                        var newRow = tableRef.insertRow(tableRef.rows.length);
+                        newRow.innerHTML = myHtmlContent;
+                        myHtmlContent = "<td>" + data + "</td>";
+                    } else if (arr[i] != "E" && arr[i] != "Z") {
+                        myHtmlContent += "<td>" + arr[i] + "</td>";
                     }
+                }
+                if (cnt > 3) {
                     var tableRef = document.getElementById('traderTable').getElementsByTagName('tbody')[
                         0];
                     var newRow = tableRef.insertRow(tableRef.rows.length);
                     newRow.innerHTML = myHtmlContent;
-                });
-            }
+                    myHtmlContent = "";
+                }
+            });
 
-
-            console.log("connected");
-            //window.location.pathname="C:/Projects/FIX/login.html"; 
         }
 
         function sendData() {

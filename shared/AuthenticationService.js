@@ -8,9 +8,10 @@ function include(file) {
     document.getElementsByTagName('head').item(0).appendChild(script); 
     
   }
-  include('../websocket_FrontEnd/shared/config.js');
-  include('../websocket_FrontEnd/shared/TBACommon.js');
-  
+//   include('../websocket_FrontEnd/shared/config.js');
+//   include('../websocket_FrontEnd/shared/TBACommon.js');
+include('./shared/config.js');
+include('./shared/TBACommon.js');
   function ValidateUser(userName,password,isOldSessionExist,captachCode,isCaptchaV2){
     var loginParameters = {
         ClientType: config.clientType,
