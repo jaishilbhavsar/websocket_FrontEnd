@@ -101,8 +101,11 @@
             var email = document.getElementById("email_id").value;
 			var password = document.getElementById("password").value;
 			sha512(password).then(data=>{
-				if(!ValidateUser(email,data,false,'',false)){
+				if(ValidateUser(email,data,false,'',false)===false){
 					alert("Enter Valid Creditintials!!!");
+				}
+				else{
+					window.location.href="file:///C:/Users/mshah/Desktop/websocket_FrontEnd/client.html";
 				}
 			});
         }
